@@ -1,13 +1,29 @@
 package core.domain.model.user;
 
 import core.domain.model.NamedEntity;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.*;
 import java.util.Set;
 
+@Entity
+@Table(name = "users")
 public class User extends NamedEntity {
 
+    @NotBlank
+    @Column(name = "login", nullable = false, unique = true)
     private String login;
+
+    @Length(min = 5)
+    @NotBlank
+    @Column(name = "password")
     private String password;
+
+    @Enumerated(value = EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "role")
     private Set<Role> roles;
 
     public User() {

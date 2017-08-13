@@ -2,6 +2,9 @@ package core.web;
 
 import core.domain.model.restaurant.Restaurant;
 import core.service.restaurant.RestaurantService;
+import core.util.ValidationUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import static core.web.RestaurantController.REST_URL;
 @RequestMapping(value = REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public final class RestaurantController {
     static final String REST_URL = "/restaurants";
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     private final RestaurantService service;
 
@@ -30,7 +34,8 @@ public final class RestaurantController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant){
-//        checkNew
+        LOG.info("save restaurant {}", restaurant);
+        ValidationUtil.checkNew(restaurant);
         Restaurant created = service.save(restaurant);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -41,31 +46,37 @@ public final class RestaurantController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Restaurant> getAll(){
+        LOG.info("get all restaurants");
         return service.getAll();
     }
 
     @GetMapping("/{id}")
     public Restaurant get(@PathVariable("id") int id){
+        LOG.info("get restaurant {}", id);
         return service.get(id);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Restaurant> updateBulk(@RequestBody List<Restaurant> restaurants){
+        LOG.info("update restaurants {}", restaurants);
         return service.updateBulk(restaurants);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Restaurant update(@PathVariable("id") int id, @RequestBody Restaurant restaurant){
+        LOG.info("update restaurant {} to {}", id, restaurant);
         return service.update(id, restaurant);
     }
 
     @DeleteMapping
     public void deleteAll(){
+        LOG.info("delete all restaurants");
         service.deleteAll();
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") int id){
+        LOG.info("delete restaurant {}", id);
         service.delete(id);
     }
 
