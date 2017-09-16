@@ -7,9 +7,15 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import java.util.Set;
 
+@NamedQueries({
+        @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id = ?1"),
+        @NamedQuery(name = User.GET_BY_LOGIN, query = "SELECT u FROM User u WHERE u.login = ?1")
+})
 @Entity
 @Table(name = "users")
 public class User extends NamedEntity {
+    public static final String DELETE = "User.delete";
+    public static final String GET_BY_LOGIN = "User.getByLogin";
 
     @NotBlank
     @Column(name = "login", nullable = false, unique = true)
@@ -26,6 +32,9 @@ public class User extends NamedEntity {
     @Column(name = "role")
     private Set<Role> roles;
 
+    @Column(name = "enabled")
+    private boolean enabled;
+
     public User() {
     }
 
@@ -34,6 +43,7 @@ public class User extends NamedEntity {
         this.login = login;
         this.password = password;
         this.roles = roles;
+        this.enabled = true;
     }
 
     public String getLogin() {
@@ -58,5 +68,13 @@ public class User extends NamedEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

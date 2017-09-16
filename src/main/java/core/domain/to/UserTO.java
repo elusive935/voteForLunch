@@ -4,15 +4,17 @@ public class UserTO extends BaseTO{
     private String name;
     private String login;
     private String password;
+    private boolean enabled;
 
     public UserTO() {
     }
 
-    public UserTO(Integer id, String name, String login, String password) {
+    public UserTO(Integer id, String name, String login, String password, boolean enabled) {
         super(id);
         this.name = name;
         this.login = login;
         this.password = password;
+        this.enabled = enabled;
     }
 
     public String getName() {
@@ -39,11 +41,21 @@ public class UserTO extends BaseTO{
         this.password = password;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "UserTO{" +
                 "name='" + name + '\'' +
                 ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }
