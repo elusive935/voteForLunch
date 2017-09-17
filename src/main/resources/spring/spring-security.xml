@@ -19,8 +19,11 @@
 
     <!--<beans:bean class="ru.javawebinar.topjava.util.PasswordUtil" id="passwordEncoder" factory-method="getPasswordEncoder"/>-->
 
+    <beans:bean class="core.util.PasswordUtil" id="passwordEncoder" factory-method="getPasswordEncoder"/>
+
     <authentication-manager>
         <authentication-provider user-service-ref="userService">
+            <password-encoder ref="passwordEncoder"/>
         <!--<authentication-provider>-->
             <!--<password-encoder ref="passwordEncoder"/>-->
 

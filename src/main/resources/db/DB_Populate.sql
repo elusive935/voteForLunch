@@ -3,13 +3,13 @@ DELETE FROM RESTAURANTS;
 DELETE FROM VOTES;
 ALTER SEQUENCE GLOBAL_SEQ RESTART WITH 100000;
 
--- admin
+-- admin (somePass)
 INSERT INTO users (name, login, password)
-VALUES ('Misha', 'misha937', 'somePass');
+VALUES ('Misha', 'misha937', '$2a$10$rPprNrHPSOde0nlrdf2w1.qPB1b14KEiVhOwgAcRG3G5cq/7vgG42');
 
--- user
+-- user (anyPass)
 INSERT INTO users (name, login, password)
-VALUES ('Sasha', 'sasha645', 'anyPass');
+VALUES ('Sasha', 'sasha645', '$2a$10$CICVvXTd4KucYKbahuQ4SOAdnBncNO5mgFTxJcC6x5VwK9N3c/Y5C');
 
 INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100000),
