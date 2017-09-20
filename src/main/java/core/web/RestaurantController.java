@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -18,7 +19,7 @@ import static core.web.RestaurantController.REST_URL;
 
 @RestController
 @RequestMapping(value = REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public final class RestaurantController {
+public class RestaurantController {
     static final String REST_URL = "/restaurants";
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
@@ -33,6 +34,7 @@ public final class RestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant){
         LOG.info("save restaurant {}", restaurant);
         ValidationUtil.checkNew(restaurant);
@@ -57,24 +59,28 @@ public final class RestaurantController {
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Secured("ROLE_ADMIN")
     public List<Restaurant> updateBulk(@RequestBody List<Restaurant> restaurants){
         LOG.info("update restaurants {}", restaurants);
         return service.updateBulk(restaurants);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Secured("ROLE_ADMIN")
     public Restaurant update(@PathVariable("id") int id, @RequestBody Restaurant restaurant){
         LOG.info("update restaurant {} to {}", id, restaurant);
         return service.update(id, restaurant);
     }
 
     @DeleteMapping
+    @Secured("ROLE_ADMIN")
     public void deleteAll(){
         LOG.info("delete all restaurants");
         service.deleteAll();
     }
 
     @DeleteMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     public void delete(@PathVariable("id") int id){
         LOG.info("delete restaurant {}", id);
         service.delete(id);

@@ -9,14 +9,16 @@ import java.util.Collection;
 
 public final class AuthorizedUser implements UserDetails{
     private UserTO user;
+    private Collection<? extends GrantedAuthority> roles;
 
     public AuthorizedUser(User user) {
         this.user = new UserTO(user.getId(), user.getName(), user.getLogin(), user.getPassword(), user.isEnabled());
+        this.roles = user.getRoles();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return roles;
     }
 
     @Override
